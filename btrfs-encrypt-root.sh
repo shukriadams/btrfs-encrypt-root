@@ -59,7 +59,7 @@ chroot_and_mkinitramfs() {
     cp "$script" $mp/tmp/"$scriptname"
     chmod a+x $mp/tmp/"$scriptname"
     echo "Chrooting and call the script in the other root"
-    chroot $mp /tmp/init-root-btrfs.sh //inner $only_subvols /dev/"$1"
+    chroot $mp /tmp/"$scriptname" //inner $only_subvols /dev/"$1"
 }
 
 unmount_everything() {
