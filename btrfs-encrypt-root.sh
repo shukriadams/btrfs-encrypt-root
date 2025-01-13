@@ -13,7 +13,10 @@ keyslot_size=32m
 
 preparation() {
     echo "Prepare"
-    umount /target/boot/efi
+    if [ $efi = true ]
+    then
+        umount /target/boot/efi
+    fi
     umount /target/boot
     umount /target/cdrom
     umount /target
@@ -55,7 +58,10 @@ chroot_and_mkinitramfs() {
     mount --bind /dev $mp/dev
     mount --bind /run $mp/run
     mount /dev/"$2" $mp/boot
-    mount /dev/"$3" $mp/boot/efi
+    if [ ! -z "$3" ]
+    then
+        mount /dev/"$3" $mp/boot/efi
+    fi
     cp "$script" $mp/tmp/"$scriptname"
     chmod a+x $mp/tmp/"$scriptname"
     echo "Chrooting and call the script in the other root"
@@ -65,10 +71,15 @@ chroot_and_mkinitramfs() {
 unmount_everything() {
     echo "Unmounting"
     cd /
-    for dir in proc sys dev run boot/efi boot
+    for dir in proc sys dev run
     do
         umount $mp/$dir
     done
+    if [ $efi = true ]
+    then
+        umount $mp/boot/efi
+    fi
+    umount $mp/boot
     umount $mp
     if [ $only_subvols = no ]
     then
@@ -109,10 +120,16 @@ then
 else
     only_subvols=no
 fi
-
-if [ -z "$1" -o -z "$2" -o -z "$3" ]
+if [ -z "$3" ]
 then
-    echo "You must pass the device of the root, boot, and EFI partition (without the /dev/) to this script."
+    efi=false
+else
+    efi=true
+fi
+
+if [ -z "$1" -o -z "$2" ]
+then
+    echo "You must pass the device of the root, boot, and optionally EFI partition (without the /dev/) to this script."
     exit 2
 fi
 
