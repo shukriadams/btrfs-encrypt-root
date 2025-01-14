@@ -113,13 +113,23 @@ then
     exit
 fi
 
-if [ "$1" = "--only-subvols" ]
-then
-   only_subvols=yes
-   shift
-else
-    only_subvols=no
-fi
+only_subvols=no
+
+while :; do
+    case $1 in
+        --only-subvols)
+            only_subvols=yes
+            ;;
+        --*)
+            echo "Invalid option “$1”"
+            exit 2
+            ;;
+        *)
+            break
+    esac
+    shift
+done
+
 if [ -z "$3" ]
 then
     efi=false
