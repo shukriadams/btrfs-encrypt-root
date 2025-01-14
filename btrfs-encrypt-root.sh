@@ -38,14 +38,21 @@ create_subvols() {
     mount /dev/"$1" -o subvol=@ $mp
 }
 
-encrypt() {
+encrypt_and_enlarge() {
     echo "Encrypt $1"
     btrfs filesystem resize -$keyslot_size $mp
     cd /
     umount $mp
+    disk=`lsblk --noheadings --output pkname /dev/"$1"`
+    partition_number=`lsblk --noheadings --output maj:min /dev/"$1" | sed 's/[0-9]*://'`
     echo 'You may ignore “Warning: keyslot operation could fail …”.'
     echo 'See <https://gitlab.com/cryptsetup/cryptsetup/-/issues/896>.'
     cryptsetup reencrypt --encrypt --type luks2 --reduce-device-size $keyslot_size /dev/"$1"
+    if [ $enlarge = yes ]
+    then
+        echo "Enlarge $1"
+        parted --script /dev/"$disk" resizepart "$partition_number" "100%"
+    fi
     cryptsetup open /dev/"$1" root
     mount /dev/mapper/root -o subvol=@ $mp
     btrfs filesystem resize max $mp
@@ -122,6 +129,13 @@ show_help() {
     echo "The devices must be given without the /dev/ prefix."
     echo
     echo "  --only-subvols            do not encrypt, only create @ and @home"
+    echo "  --enlarge                 enlarge root partition to maximum"
+    echo
+    echo "--enlarge resizes the root partition to 100%.  This makes encryption"
+    echo "much faster, because you make a small partition for just the"
+    echo "installation of the base system, and then you call this script,"
+    echo "which has to encrypt only the smaller partition.  The enlargement"
+    echo "covers only empty space, so no encryption is necessary there."
 }
 
 if [ $# -eq 0 ]
@@ -131,6 +145,7 @@ then
 fi
 
 only_subvols=no
+enlarge=no
 
 while :; do
     case $1 in
@@ -140,6 +155,9 @@ while :; do
             ;;
         --only-subvols)
             only_subvols=yes
+            ;;
+        --enlarge)
+            enlarge=yes
             ;;
         --*)
             echo "Invalid option “$1”"
@@ -168,7 +186,7 @@ preparation
 create_subvols "$1"
 if [ $only_subvols = no ]
 then
-    encrypt "$1"
+    encrypt_and_enlarge "$1"
 fi
 chroot_and_mkinitramfs "$1" "$2" "$3"
 unmount_everything
