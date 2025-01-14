@@ -44,7 +44,7 @@ encrypt_and_enlarge() {
     cd /
     umount $mp
     disk=`lsblk --noheadings --output pkname /dev/"$1"`
-    partition_number=`lsblk --noheadings --output maj:min /dev/"$1" | sed 's/[0-9]*://'`
+    partition_number=`lsblk --noheadings --output partn /dev/"$1" | tr -d "[:space:]"`
     echo 'You may ignore “Warning: keyslot operation could fail …”.'
     echo 'See <https://gitlab.com/cryptsetup/cryptsetup/-/issues/896>.'
     cryptsetup reencrypt --encrypt --type luks2 --reduce-device-size $keyslot_size /dev/"$1"
