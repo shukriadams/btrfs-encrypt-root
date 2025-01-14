@@ -113,10 +113,31 @@ then
     exit
 fi
 
+show_help() {
+    echo "Add @ and @home subvolumes to a Btrfs root partition,"
+    echo "and encrypt it optionally"
+    echo
+    echo "Usage: btrfs-encrypt-root [options] {root-dev} {boot-dev} [{efi-dev}]"
+    echo
+    echo "The devices must be given without the /dev/ prefix."
+    echo
+    echo "  --only-subvols            do not encrypt, only create @ and @home"
+}
+
+if [ $# -eq 0 ]
+then
+    show_help
+    exit
+fi
+
 only_subvols=no
 
 while :; do
     case $1 in
+        -h|-\?|--help)
+            show_help
+            exit
+            ;;
         --only-subvols)
             only_subvols=yes
             ;;
