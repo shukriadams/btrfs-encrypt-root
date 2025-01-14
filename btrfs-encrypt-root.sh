@@ -160,7 +160,7 @@ while :; do
             enlarge=yes
             ;;
         --*)
-            echo "Invalid option “$1”"
+            echo "Invalid option “$1”.  Use --help for more information."
             exit 2
             ;;
         *)
@@ -178,7 +178,10 @@ fi
 
 if [ -z "$1" -o -z "$2" ]
 then
-    echo "You must pass the device of the root, boot, and optionally EFI partition (without the /dev/) to this script."
+    echo "You must pass the device of the root, boot, and optionally "
+    echo "EFI partition (without the /dev/) to this script."
+    echo
+    echo "Use --help for more information."
     exit 2
 fi
 
