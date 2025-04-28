@@ -34,8 +34,8 @@ for ``/`` and ``@home`` for ``/home``.  If you pass ``--only-subvols`` as the
 first parameter, no encryption happens but only the subvolumes are created.
 
 If you pass the ``--enlarge`` parameter, the root partition is enlarged to the
-complete available space after it after the encryption.  This makes encryption
-much faster, because you make a small partition for just the installation of
-the base system, and then you call this script, which has to encrypt only the
+complete available space after the encryption.  This makes encryption much
+faster, because you make a small partition for just the installation of the
+base system, and then you call this script, which has to encrypt only the
 smaller partition.  The enlargement covers only empty space, so no encryption
 is necessary there.
