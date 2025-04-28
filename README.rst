@@ -19,13 +19,13 @@ repository::
 **Caution**: Use the script only if you trust the script, either because you
 can analyse it yourself, or because you trust someone who can.
 
-It works only in an EFI environment.  It assumes that you want to have ``/``
-and ``/home`` on the same partition, and that there is a separate partition for
-``/boot``.  Then, the three parameters are:
+It assumes that you want to have ``/`` and ``/home`` on the same partition, and
+that there is a separate partition for ``/boot``.  Then, the three parameters
+are:
 
 - the device name for ``/``
 - the device name for ``/boot``
-- the device name for ``/boot/efi``
+- the device name for ``/boot/efi`` (optional)
 
 All three without the ``/dev/`` prefix.
 
