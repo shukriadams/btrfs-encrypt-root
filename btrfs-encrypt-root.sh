@@ -28,10 +28,19 @@ create_subvols() {
     echo "Create subvolumes"
     mount /dev/"$1" $mp
     cd $mp
-    [ -z "`ls home 2>&1`" ] || exit 3
+
+    # create a temporary place to juggle the contents of home around
+    mkdir -p /tmp/home
+    mv home/* /tmp/home
+    
     btrfs subvolume snapshot . @
     find -maxdepth 1 \! -name "@*" \! -name . -exec rm -Rf {} \;
     btrfs subvolume create @home
+
+    # move home contents into home subvol
+    mv /tmp/home/* @home
+    echo "copied home back. listing"
+    
     cd /
     umount $mp
     echo "Mount @ instead of /"
