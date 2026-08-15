@@ -39,7 +39,6 @@ create_subvols() {
 
     # move home contents into home subvol
     mv /tmp/home/* @home
-    echo "copied home back. listing"
     
     cd /
     umount $mp
