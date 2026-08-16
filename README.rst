@@ -14,12 +14,10 @@ For a more detailed writeup see https://blog.shukriadams.com/tech/Ubuntu26_btrfs
 - Ensure you have UEFI enabled.
 - Boot into Ubuntu installation ISO, advance to disk setup, select "Manaul installation".
 - Delete all existing partitions on your root disk.
-- In "Device for boot loader" dropdown select root disk, this will automatically create
-a FAT32 partition mounted to `/boot/efi`, if this doesn't happen UEFI is not set up properly.
+- In "Device for boot loader" dropdown select root disk, this will automatically create a FAT32 partition mounted to `/boot/efi`, if this doesn't happen UEFI is not set up properly.
 - Create an EXT4 partition on root disk, make it 1GB in size, select `/boot` as its mount.
 - Create a BTRFS partition with remaining disk space, select `/` as its mount.
-- Continue with installation until you get the option to reboot, select "Continue testing" instead 
-to exit to installer desktop, then follow original author's instructions below.
+- Continue with installation until you get the option to reboot, select "Continue testing" instead to exit to installer desktop, then follow original author's instructions below.
 
 Running script
 ++++++++++++++
