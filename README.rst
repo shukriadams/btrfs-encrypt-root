@@ -1,14 +1,15 @@
 btrfs-encrypt-root
 ==================
 
-Permanently forked from https://gitlab.com/bronger/btrfs-encrypt-root (unmaintained).
+Permanently forked from https://gitlab.com/bronger/btrfs-encrypt-root (no longer maintained).
 
-## How to install on Ubuntu
+Preparing Ubuntu
+++++++++++++++++
 
 This fork is confirmed working on Ubuntu 26.04, original script linked above is confirmed
 working on 24.04. Must be applied during a full reinstall, does not work on existing installs.
 
-A more detailed writeup is at this [blog post](https://blog.shukriadams.com/tech/Ubuntu26_btrfs_and_timeshift).
+For a more detailed writeup see https://blog.shukriadams.com/tech/Ubuntu26_btrfs_and_timeshift.
 
 - Ensure you have UEFI enabled.
 - Boot into Ubuntu installation ISO, advance to disk setup, select "Manaul installation".
@@ -20,7 +21,8 @@ a FAT32 partition mounted to `/boot/efi`, if this doesn't happen UEFI is not set
 - Continue with installation until you get the option to reboot, select "Continue testing" instead 
 to exit to installer desktop, then follow original author's instructions below.
 
-## How to run script
+Running script
+++++++++++++++
 
 Since Ubuntu 23.04, it cannot be installed anymore on an encrypted Btrfs.
 Moreover, no @ and @home subvolumes are created automatically during
